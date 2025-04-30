@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  4 лаба  -->
+    <string name="app_name">Lab_4</string>
+    <string name="main_word">Galaxy</string>
+    <string name="close_word">Close</string>
+    <string name="skip">SKIP</string>
+    <string name="answer1">Сломать</string>
+
+    <!--  5 лаба  -->
+    <!-- Страница логина и регистрации -->
+    <string name="first_name_hint">Введите имя</string>
+    <string name="last_name_hint">Введите фамилию</string>
+    <string name="email_hint">Введите email</string>
+    <string name="password_hint">Введите пароль</string>
+    <string name="login_button">Войти</string>
+    <string name="register_button">Регистрация</string>
+
+    <!-- Страница профиля -->
+    <string name="first_name_label">Имя: %s</string>
+    <string name="last_name_label">Фамилия: %s</string>
+    <string name="email_label">Email: %s</string>
+    <string name="to_questions_button">К вопросам</string>
+
+    <string name="correct">Correct!</string>
+    <string name="wrong">Wrong!</string>
+
+</resources>
