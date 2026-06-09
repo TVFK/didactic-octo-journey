@@ -25,4 +25,21 @@
     <string name="correct">Correct!</string>
     <string name="wrong">Wrong!</string>
 
+    <!-- FoodVision Admin -->
+    <string name="foodvision_admin">FoodVision Admin</string>
+    <string name="synchronization">Синхронизация</string>
+    <string name="synchronization_ok">В порядке</string>
+    <string name="enter_system">Войти в систему</string>
+    <string name="enter_system_desc">Доступ к административным функциям управления системой распознавания блюд</string>
+    <string name="monitoring_servers">Мониторинг серверов распознавания</string>
+    <string name="monitoring_servers_desc">Просмотр состояния модулей и системы распознавания в режиме реального времени</string>
+    <string name="system_status">Текущее состояние системы</string>
+    <string name="active_modules">Активные модули</string>
+    <string name="active_modules_value">12 / 15</string>
+    <string name="last_menu_update">Последнее обновление меню</string>
+    <string name="last_menu_update_value">24.05.2026 08:30</string>
+    <string name="mock_time">22:19</string>
+
 </resources>
+
+

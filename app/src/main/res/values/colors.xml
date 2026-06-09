@@ -16,4 +16,36 @@
 
     <color name="background">#FFFFFFFF</color>
     <color name="textColorPrimary">#FF000000</color>
+
+    <!-- FoodVision Admin Colors -->
+    <color name="foodvision_blue">#1976D2</color>
+    <color name="foodvision_blue_light">#E3F2FD</color>
+    <color name="foodvision_green">#4CAF50</color>
+    <color name="foodvision_green_light">#E8F5E9</color>
+    <color name="foodvision_gray_bg">#F8F9FA</color>
+    <color name="foodvision_gray_border">#DEE2E6</color>
+    <color name="foodvision_gray_text">#6C757D</color>
+    <color name="primary">#1976D2</color>
+    <color name="primary_light">#E3F2FD</color>
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="error">#F44336</color>
+    <color name="background_light">#F5F5F5</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="sidebar">#FAFAFA</color>
+    <color name="muted">#ECECF0</color>
+    <color name="border">#E0E0E0</color>
+    <color name="text_secondary">#666666</color>
+
+    <color name="online_text">#4caf50</color>
+    <color name="online_bg">#e8f5e9</color>
+    <color name="offline_text">#f44336</color>
+    <color name="offline_bg">#ffebee</color>
+    <color name="mode_text">#1976d2</color>
+    <color name="mode_bg">#e3f2fd</color>
+    <color name="text_grey">#9e9e9e</color>
+    <color name="text_primary">#212121</color>
+    <color name="separator">#e0e0e0</color>
+    <color name="nav_item_text_color">#212121</color>
+
 </resources>

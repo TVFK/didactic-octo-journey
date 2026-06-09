@@ -1,18 +1,43 @@
 package ru.taf.lab_4.api
 
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.taf.lab_4.data.api.AuthApi
+import ru.taf.lab_4.model.App
 
 object RetrofitClient {
-//    private const val BASE_URL = "http://192.168.1.69:8080/api/v1/"
+    private const val BASE_URL = "http://10.8.0.2:8000/"
 
-    private const val BASE_URL = "http://192.168.77.39:8080/api/v1/"
+    private val authInterceptor = Interceptor { chain ->
+        val original = chain.request()
+        val prefs = App.instance.getSharedPreferences("auth", android.content.Context.MODE_PRIVATE)
+        val token = prefs.getString("access_token", null)
+        val requestBuilder = original.newBuilder()
+        if (!token.isNullOrBlank()) {
+            requestBuilder.header("Authorization", "Bearer $token")
+        }
+        chain.proceed(requestBuilder.build())
+    }
 
-    val instance: QuestionApi by lazy {
+    private val client = OkHttpClient.Builder()
+        .addInterceptor(authInterceptor)
+        .build()
+
+    val instance: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(QuestionApi::class.java)
+    }
+
+    val authApi: AuthApi by lazy {
+        instance.create(AuthApi::class.java)
+    }
+
+    val moduleApi: ModuleApi by lazy {
+        instance.create(ModuleApi::class.java)
     }
 }

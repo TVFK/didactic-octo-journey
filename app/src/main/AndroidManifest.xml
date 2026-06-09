@@ -17,13 +17,7 @@
         android:theme="@style/Theme.Lab_4"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.activities.WordLearningActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activities.ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activities.RegistrationActivity"
+            android:name=".ui.activities.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.LoginActivity"

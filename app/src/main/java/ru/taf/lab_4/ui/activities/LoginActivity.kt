@@ -2,48 +2,72 @@ package ru.taf.lab_4.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
-import ru.taf.lab_4.data.AppDatabaseHelper
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import ru.taf.lab_4.api.RetrofitClient
 import ru.taf.lab_4.databinding.ActivityLoginBinding
-import ru.taf.lab_4.model.User
+import ru.taf.lab_4.model.LoginRequest
 
 class LoginActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.errorBanner.visibility = View.GONE
+
         binding.btnLogin.setOnClickListener {
-            val email = binding.etEmail.text.toString().trim()
+            val username = binding.etLogin.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
-            if (email.isBlank() || password.isBlank()) {
+            if (username.isBlank() || password.isBlank()) {
                 Toast.makeText(this, "Заполните все поля!", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
-            val db = AppDatabaseHelper(this)
-            val user: User? = db.getUser(email, password)
+            binding.errorBanner.visibility = View.GONE
 
-            if (user == null) {
-                Toast.makeText(this, "email или пароль введены неверно!", Toast.LENGTH_LONG).show()
-            } else {
-                val prefs = getSharedPreferences("auth", MODE_PRIVATE)
-                prefs.edit {
-                    putInt("userId", user.id)
-                    apply()
+            lifecycleScope.launch {
+                try {
+                    val response = RetrofitClient.authApi.login(
+                        LoginRequest(username, password)
+                    )
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        if (body != null) {
+                            val prefs = getSharedPreferences("auth", MODE_PRIVATE)
+                            prefs.edit {
+                                putString("access_token", body.access_token)
+                                putString("refresh_token", body.refresh_token)
+                                apply()
+                            }
+                            // Переход на SuccessActivity вместо прямого редиректа
+                            val intent =
+                                Intent(this@LoginActivity, LoginSuccessActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            showError("Пустой ответ от сервера")
+                        }
+                    } else {
+                        showError("Неверный логин или пароль")
+                    }
+                } catch (e: Exception) {
+                    showError("Ошибка сети: ${e.localizedMessage}")
                 }
-                val intent = Intent(this, ProfileActivity::class.java).apply {
-                    putExtra("user", user)
-                }
-                startActivity(intent)
             }
         }
+    }
 
-        binding.toRegister.setOnClickListener {
-            startActivity(Intent(this, RegistrationActivity::class.java))
-        }
+    private fun showError(message: String) {
+        binding.tvErrorText.text = message
+        binding.errorBanner.visibility = View.VISIBLE
     }
 }
