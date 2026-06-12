@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:background="#f5f5f5">
 
+    <!--
+        TopBar с showModuleInfo + currentRole="Администратор" — как на Dashboard.
+        В Kotlin: binding.topBar.moduleInfoContainer.visibility = View.VISIBLE
+                  binding.topBar.tvRoleName.text = "Администратор"
+    -->
     <include
         android:id="@+id/topBar"
         layout="@layout/layout_topbar"
@@ -19,12 +24,18 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topBar">
 
+        <!--
+            navModules уже имеет android:selected="true" из общего layout —
+            это правильный активный пункт для данного экрана, менять не нужно.
+        -->
         <include
             android:id="@+id/navigationPanel"
             layout="@layout/layout_navigation_panel"
-            android:layout_width="wrap_content"
+            android:layout_width="280dp"
             android:layout_height="match_parent" />
 
         <View
@@ -32,11 +43,10 @@
             android:layout_height="match_parent"
             android:background="#e0e0e0" />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fillViewport="true">
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,67 +57,110 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="32dp"
                     android:text="Выбор модуля распознавания"
                     android:textColor="#212121"
                     android:textSize="28sp"
                     android:textStyle="bold" />
 
+                <!-- ===== Ряд: таблица (flex:2) + панель информации (фикс. ширина) ===== -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <!-- Таблица модулей -->
+                    <!-- ===== Таблица модулей ===== -->
+                    <!--
+                        7 колонок не сжимаются: HorizontalScrollView сохраняет паддинги
+                        из макета и даёт горизонтальный скролл на узких экранах.
+                        При подключении API этот TableLayout заменяется на RecyclerView
+                        (item-layout с теми же ячейками); module_code используется как id
+                        при клике на строку для запроса /recognition-modules/{module_id}.
+                    -->
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="24dp"
-                        android:layout_weight="2"
+                        android:layout_marginEnd="32dp"
+                        android:layout_weight="1"
                         app:cardBackgroundColor="@android:color/white"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="2dp">
 
                         <HorizontalScrollView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:scrollbars="none">
 
                             <TableLayout
                                 android:id="@+id/moduleTable"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:stretchColumns="1">
+                                android:layout_height="wrap_content">
 
                                 <!-- Заголовок -->
                                 <TableRow android:background="#fafafa">
 
                                     <TextView
-                                        style="@style/TableHeaderCell"
-                                        android:text="ID" />
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="ID"
+                                        android:textColor="#212121"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
 
                                     <TextView
-                                        style="@style/TableHeaderCell"
-                                        android:text="Столовая" />
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="Столовая"
+                                        android:textColor="#212121"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
 
                                     <TextView
-                                        style="@style/TableHeaderCell"
-                                        android:text="IP-адрес" />
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="IP-адрес"
+                                        android:textColor="#212121"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
 
                                     <TextView
-                                        style="@style/TableHeaderCell"
-                                        android:text="Режим" />
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="Режим"
+                                        android:textColor="#212121"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
 
                                     <TextView
-                                        style="@style/TableHeaderCell"
-                                        android:text="Статус" />
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="Статус"
+                                        android:textColor="#212121"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
 
                                     <TextView
-                                        style="@style/TableHeaderCell"
-                                        android:text="Версия модели" />
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="Версия модели"
+                                        android:textColor="#212121"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
 
                                     <TextView
-                                        style="@style/TableHeaderCell"
-                                        android:text="Последнее соединение" />
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="Последнее соединение"
+                                        android:textColor="#212121"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
 
                                 </TableRow>
 
@@ -116,13 +169,380 @@
                                     android:layout_height="1dp"
                                     android:background="#e0e0e0" />
 
+                                <!-- Строка 1: MODULE-101 — выбрана по умолчанию (selectedModule = modules[0]) -->
+                                <TableRow
+                                    android:id="@+id/rowModule1"
+                                    android:background="@drawable/bg_table_row_selected">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="MODULE-101"
+                                        android:textColor="#212121"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="Столовая №2"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="monospace"
+                                        android:padding="16dp"
+                                        android:text="192.168.1.101"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:padding="12dp">
+
+                                        <com.google.android.material.chip.Chip
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="RECOGNITION"
+                                            android:textColor="#1976d2"
+                                            android:textSize="12sp"
+                                            app:chipBackgroundColor="#e3f2fd"
+                                            app:chipMinHeight="28dp"
+                                            app:ensureMinTouchTargetSize="false" />
+
+                                    </FrameLayout>
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:padding="12dp">
+
+                                        <com.google.android.material.chip.Chip
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="ONLINE"
+                                            android:textColor="#4caf50"
+                                            android:textSize="12sp"
+                                            app:chipBackgroundColor="#e8f5e9"
+                                            app:chipIcon="@drawable/ic_circle_small"
+                                            app:chipIconTint="#4caf50"
+                                            app:chipMinHeight="28dp"
+                                            app:ensureMinTouchTargetSize="false" />
+
+                                    </FrameLayout>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="monospace"
+                                        android:padding="16dp"
+                                        android:text="v3.1.0"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="24.05.2026 14:23"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                </TableRow>
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="#e0e0e0" />
+
+                                <!-- Строка 2: MODULE-102 -->
+                                <TableRow
+                                    android:id="@+id/rowModule2"
+                                    android:background="@drawable/selector_table_row">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="MODULE-102"
+                                        android:textColor="#212121"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="Столовая №3"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="monospace"
+                                        android:padding="16dp"
+                                        android:text="192.168.1.102"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:padding="12dp">
+
+                                        <com.google.android.material.chip.Chip
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="REGISTRATION"
+                                            android:textColor="#1976d2"
+                                            android:textSize="12sp"
+                                            app:chipBackgroundColor="#e3f2fd"
+                                            app:chipMinHeight="28dp"
+                                            app:ensureMinTouchTargetSize="false" />
+
+                                    </FrameLayout>
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:padding="12dp">
+
+                                        <com.google.android.material.chip.Chip
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="ONLINE"
+                                            android:textColor="#4caf50"
+                                            android:textSize="12sp"
+                                            app:chipBackgroundColor="#e8f5e9"
+                                            app:chipIcon="@drawable/ic_circle_small"
+                                            app:chipIconTint="#4caf50"
+                                            app:chipMinHeight="28dp"
+                                            app:ensureMinTouchTargetSize="false" />
+
+                                    </FrameLayout>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="monospace"
+                                        android:padding="16dp"
+                                        android:text="v3.1.0"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="24.05.2026 14:20"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                </TableRow>
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="#e0e0e0" />
+
+                                <!-- Строка 3: MODULE-103 — OFFLINE, режим "—" -->
+                                <TableRow
+                                    android:id="@+id/rowModule3"
+                                    android:background="@drawable/selector_table_row">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="MODULE-103"
+                                        android:textColor="#212121"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="Столовая №1"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="monospace"
+                                        android:padding="16dp"
+                                        android:text="192.168.1.103"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                    <!-- mode === "—" → просто текст, без chip -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="—"
+                                        android:textColor="#9e9e9e"
+                                        android:textSize="14sp" />
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:padding="12dp">
+
+                                        <com.google.android.material.chip.Chip
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="OFFLINE"
+                                            android:textColor="#f44336"
+                                            android:textSize="12sp"
+                                            app:chipBackgroundColor="#ffebee"
+                                            app:chipIcon="@drawable/ic_circle_small"
+                                            app:chipIconTint="#f44336"
+                                            app:chipMinHeight="28dp"
+                                            app:ensureMinTouchTargetSize="false" />
+
+                                    </FrameLayout>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="monospace"
+                                        android:padding="16dp"
+                                        android:text="v3.0.5"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="24.05.2026 09:15"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                </TableRow>
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="#e0e0e0" />
+
+                                <!-- Строка 4: MODULE-104 -->
+                                <TableRow
+                                    android:id="@+id/rowModule4"
+                                    android:background="@drawable/selector_table_row">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="MODULE-104"
+                                        android:textColor="#212121"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="Столовая №4"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="monospace"
+                                        android:padding="16dp"
+                                        android:text="192.168.1.104"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:padding="12dp">
+
+                                        <com.google.android.material.chip.Chip
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="RECOGNITION"
+                                            android:textColor="#1976d2"
+                                            android:textSize="12sp"
+                                            app:chipBackgroundColor="#e3f2fd"
+                                            app:chipMinHeight="28dp"
+                                            app:ensureMinTouchTargetSize="false" />
+
+                                    </FrameLayout>
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:padding="12dp">
+
+                                        <com.google.android.material.chip.Chip
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="ONLINE"
+                                            android:textColor="#4caf50"
+                                            android:textSize="12sp"
+                                            app:chipBackgroundColor="#e8f5e9"
+                                            app:chipIcon="@drawable/ic_circle_small"
+                                            app:chipIconTint="#4caf50"
+                                            app:chipMinHeight="28dp"
+                                            app:ensureMinTouchTargetSize="false" />
+
+                                    </FrameLayout>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="monospace"
+                                        android:padding="16dp"
+                                        android:text="v3.1.0"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="16dp"
+                                        android:text="24.05.2026 14:25"
+                                        android:textColor="#424242"
+                                        android:textSize="14sp" />
+
+                                </TableRow>
+
                             </TableLayout>
+
                         </HorizontalScrollView>
+
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Информация о модуле -->
+                    <!-- ===== Панель "Информация о модуле" (380-400px → 400dp) ===== -->
+                    <!--
+                        Заполняется данными выбранной строки.
+                        В Kotlin: GET /recognition-modules/{module_code} → обновить
+                        tvInfoModuleId, tvInfoCanteen, tvInfoIp, chipInfoStatus,
+                        chipInfoMode (или tvInfoModeEmpty при mode == "—"),
+                        tvInfoVersion, tvInfoLastConnection, btnGoToServer.isEnabled
+                    -->
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="380dp"
+                        android:layout_width="400dp"
                         android:layout_height="wrap_content"
                         app:cardBackgroundColor="@android:color/white"
                         app:cardCornerRadius="16dp"
@@ -132,7 +552,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:padding="24dp">
+                            android:padding="32dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -144,166 +564,230 @@
                                 android:textStyle="bold" />
 
                             <!-- ID модуля -->
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
-                                android:text="ID модуля"
-                                android:textColor="#9e9e9e"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/tvSelectedId"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp"
-                                android:text="-"
-                                android:textColor="#212121"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <!-- Столовая -->
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
-                                android:text="Столовая"
-                                android:textColor="#9e9e9e"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/tvSelectedCanteen"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp"
-                                android:text="-"
-                                android:textColor="#212121"
-                                android:textSize="16sp" />
-
-                            <!-- IP-адрес -->
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
-                                android:text="IP-адрес"
-                                android:textColor="#9e9e9e"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/tvSelectedIp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp"
-                                android:text="-"
-                                android:fontFamily="monospace"
-                                android:textColor="#212121"
-                                android:textSize="16sp" />
-
-                            <!-- Статус -->
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
-                                android:text="Статус"
-                                android:textColor="#9e9e9e"
-                                android:textSize="14sp" />
-
-                            <FrameLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp">
-
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chipSelectedStatus"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="-"
-                                    android:textSize="12sp"
-                                    app:chipIcon="@drawable/ic_circle_small"
-                                    app:chipMinHeight="28dp"
-                                    app:ensureMinTouchTargetSize="false" />
-                            </FrameLayout>
-
-                            <!-- Режим работы -->
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
-                                android:text="Режим работы"
-                                android:textColor="#9e9e9e"
-                                android:textSize="14sp" />
-
-                            <FrameLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp">
-
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chipSelectedMode"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="-"
-                                    android:textSize="12sp"
-                                    app:chipMinHeight="28dp"
-                                    app:ensureMinTouchTargetSize="false" />
-                            </FrameLayout>
-
-                            <!-- Версия модели -->
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
-                                android:text="Версия модели"
-                                android:textColor="#9e9e9e"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/tvSelectedVersion"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp"
-                                android:text="-"
-                                android:fontFamily="monospace"
-                                android:textColor="#212121"
-                                android:textSize="16sp" />
-
-                            <!-- Последнее соединение -->
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
-                                android:text="Последнее соединение"
-                                android:textColor="#9e9e9e"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/tvSelectedLastConnection"
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="24dp"
-                                android:text="-"
-                                android:textColor="#212121"
-                                android:textSize="16sp" />
+                                android:orientation="vertical">
 
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:text="ID модуля"
+                                    android:textColor="#9e9e9e"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/tvInfoModuleId"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="MODULE-101"
+                                    android:textColor="#212121"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <!-- Столовая -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="24dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:text="Столовая"
+                                    android:textColor="#9e9e9e"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/tvInfoCanteen"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Столовая №2"
+                                    android:textColor="#212121"
+                                    android:textSize="20sp" />
+
+                            </LinearLayout>
+
+                            <!-- IP-адрес -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="24dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:text="IP-адрес"
+                                    android:textColor="#9e9e9e"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/tvInfoIp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="monospace"
+                                    android:text="192.168.1.101"
+                                    android:textColor="#212121"
+                                    android:textSize="20sp" />
+
+                            </LinearLayout>
+
+                            <!-- Статус -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="24dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="6dp"
+                                    android:text="Статус"
+                                    android:textColor="#9e9e9e"
+                                    android:textSize="13sp" />
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/chipInfoStatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="ONLINE"
+                                    android:textColor="#4caf50"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    app:chipBackgroundColor="#e8f5e9"
+                                    app:chipIcon="@drawable/ic_circle_small"
+                                    app:chipIconTint="#4caf50" />
+
+                            </LinearLayout>
+
+                            <!-- Режим работы -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="24dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="6dp"
+                                    android:text="Режим работы"
+                                    android:textColor="#9e9e9e"
+                                    android:textSize="13sp" />
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/chipInfoMode"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="RECOGNITION"
+                                    android:textColor="#1976d2"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    app:chipBackgroundColor="#e3f2fd" />
+
+                                <!-- Альтернатива при mode == "—": показать вместо chip -->
+                                <TextView
+                                    android:id="@+id/tvInfoModeEmpty"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="—"
+                                    android:textColor="#212121"
+                                    android:textSize="20sp"
+                                    android:visibility="gone" />
+
+                            </LinearLayout>
+
+                            <!-- Версия модели -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="24dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:text="Версия модели"
+                                    android:textColor="#9e9e9e"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/tvInfoVersion"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="monospace"
+                                    android:text="v3.1.0"
+                                    android:textColor="#212121"
+                                    android:textSize="20sp" />
+
+                            </LinearLayout>
+
+                            <!-- Последнее соединение -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="24dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:text="Последнее соединение"
+                                    android:textColor="#9e9e9e"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/tvInfoLastConnection"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="24.05.2026 14:23"
+                                    android:textColor="#212121"
+                                    android:textSize="20sp" />
+
+                            </LinearLayout>
+
+                            <!--
+                                disabled, если выбранный модуль OFFLINE.
+                                MaterialButton сам тускнеет при isEnabled = false
+                                (через стандартный ColorStateList темы Material).
+                            -->
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnGoToServer"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingTop="16dp"
-                                android:paddingBottom="16dp"
+                                android:layout_marginTop="16dp"
+                                android:paddingTop="14dp"
+                                android:paddingBottom="14dp"
                                 android:text="Перейти к серверу распознавания"
                                 android:textAllCaps="false"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 app:cornerRadius="12dp"
                                 app:icon="@drawable/ic_arrow_right"
-                                app:iconGravity="end" />
+                                app:iconGravity="end"
+                                app:iconPadding="8dp" />
 
                         </LinearLayout>
+
                     </com.google.android.material.card.MaterialCardView>
+
                 </LinearLayout>
+
             </LinearLayout>
-        </ScrollView>
+
+        </androidx.core.widget.NestedScrollView>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

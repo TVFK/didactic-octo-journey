@@ -20,7 +20,13 @@
             android:name=".ui.activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.LoginActivity"
+            android:name=".ui.activities.LoginSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.ServerMonitoringActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

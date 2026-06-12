@@ -3,6 +3,7 @@ package ru.taf.lab_4.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ru.taf.lab_4.databinding.ActivityLoginSuccessBinding
 
 class LoginSuccessActivity : AppCompatActivity() {
 

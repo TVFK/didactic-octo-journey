@@ -35,8 +35,7 @@
                 android:background="@drawable/selector_nav_item"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="16dp"
-                android:selected="true">
+                android:padding="16dp" >
 
                 <TextView
                     android:layout_width="match_parent"
