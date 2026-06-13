@@ -1,4 +1,4 @@
-package ru.taf.lab_4.data.api
+package ru.taf.lab_4.api
 
 import retrofit2.Response
 import retrofit2.http.Body

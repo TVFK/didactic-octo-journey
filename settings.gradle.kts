@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Lab_4"
+rootProject.name = "foodVision"
 include(":app")

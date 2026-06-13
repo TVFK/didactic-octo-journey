@@ -9,6 +9,7 @@
         android:maxSdkVersion="32" />
 
     <application
+        android:name=".model.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -21,6 +22,12 @@
             android:exported="false" />
         <activity
             android:name=".ui.activities.LoginSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.DashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.ModuleSelectionActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.ServerMonitoringActivity"

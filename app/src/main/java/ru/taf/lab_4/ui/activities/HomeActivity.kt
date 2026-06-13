@@ -22,7 +22,14 @@ class HomeActivity : AppCompatActivity() {
 
         // Карточка "Войти в систему"
         binding.cardLogin.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            // Если есть токен, идем сразу на Dashboard, иначе на Login
+            val prefs = getSharedPreferences("auth", MODE_PRIVATE)
+            val token = prefs.getString("access_token", null)
+            if (token != null) {
+                startActivity(Intent(this, DashboardActivity::class.java))
+            } else {
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
         }
 
         // Карточка "Мониторинг"
