@@ -33,6 +33,9 @@
             android:name=".ui.activities.ServerMonitoringActivity"
             android:exported="false" />
         <activity
+            android:name=".ModuleSelectionActivity"
+            android:label="Выбор модуля распознавания" />
+        <activity
             android:name=".ui.activities.HomeActivity"
             android:exported="true">
             <intent-filter>
