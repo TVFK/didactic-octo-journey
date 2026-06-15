@@ -1,93 +1,57 @@
-package ru.taf.lab_4.ui.activities
+package ru.taf.lab_4.ui.fragments
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.launch
 import ru.taf.lab_4.R
 import ru.taf.lab_4.api.RetrofitClient
-import ru.taf.lab_4.databinding.ActivityModuleSelectionBinding
+import ru.taf.lab_4.databinding.FragmentModuleSelectionBinding
 import ru.taf.lab_4.model.ModuleDetail
 import ru.taf.lab_4.model.ModuleSummary
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
-class ModuleSelectionActivity : AppCompatActivity() {
+class ModuleSelectionFragment : Fragment() {
 
-    private lateinit var binding: ActivityModuleSelectionBinding
+    private var _binding: FragmentModuleSelectionBinding? = null
+    private val binding get() = _binding!!
 
     // module_id → TableRow: нужен для переключения выделения без пересоздания строк
     private val rowMap = mutableMapOf<Int, TableRow>()
     private var selectedModuleId: Int? = null
 
-    private val handler = Handler(Looper.getMainLooper())
-    private val clockRunnable = object : Runnable {
-        override fun run() {
-            binding.topBar.time.text =
-                SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-            handler.postDelayed(this, 60_000L)
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentModuleSelectionBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    // ──────────────────────────────────────────────────────────────
-    // Lifecycle
-    // ──────────────────────────────────────────────────────────────
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityModuleSelectionBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        setupTopBar()
-        setupClock()
-        setupNavigation()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         loadModules()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        handler.removeCallbacks(clockRunnable)
-    }
-
-    // ──────────────────────────────────────────────────────────────
-    // Setup
-    // ──────────────────────────────────────────────────────────────
-
-    private fun setupTopBar() {
-        binding.topBar.moduleInfoContainer.visibility = View.VISIBLE
-        binding.topBar.tvRoleName.text = "Администратор"
-    }
-
-    private fun setupClock() {
-        handler.post(clockRunnable)
-    }
-
-    private fun setupNavigation() {
-        // Подсвечиваем активный пункт
-        binding.navigationPanel.navModules.isSelected = true
-
-        // TODO: добавить обработчики остальных пунктов при реализации навигации
-        binding.navigationPanel.navLogout.setOnClickListener {
-            getSharedPreferences("auth", MODE_PRIVATE).edit().clear().apply()
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     // ──────────────────────────────────────────────────────────────
@@ -95,7 +59,7 @@ class ModuleSelectionActivity : AppCompatActivity() {
     // ──────────────────────────────────────────────────────────────
 
     private fun loadModules() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val response = RetrofitClient.moduleApi.getModulesStatusAuth()
                 if (response.isSuccessful) {
@@ -159,7 +123,8 @@ class ModuleSelectionActivity : AppCompatActivity() {
     }
 
     private fun createModuleRow(module: ModuleSummary): TableRow {
-        val row = TableRow(this).apply {
+        val context = requireContext()
+        val row = TableRow(context).apply {
             setBackgroundResource(R.drawable.selector_table_row)
             isClickable = true
             isFocusable = true
@@ -187,7 +152,7 @@ class ModuleSelectionActivity : AppCompatActivity() {
         bold: Boolean = false,
         monospace: Boolean = false,
         textColor: String = "#424242"
-    ): TextView = TextView(this).apply {
+    ): TextView = TextView(requireContext()).apply {
         layoutParams = TableRow.LayoutParams(
             TableRow.LayoutParams.WRAP_CONTENT,
             TableRow.LayoutParams.WRAP_CONTENT
@@ -231,7 +196,8 @@ class ModuleSelectionActivity : AppCompatActivity() {
         withIcon: Boolean = false,
         iconTint: String? = null
     ): FrameLayout {
-        val chip = Chip(this).apply {
+        val context = requireContext()
+        val chip = Chip(context).apply {
             this.text = text
             setTextColor(Color.parseColor(textColor))
             chipBackgroundColor = ColorStateList.valueOf(Color.parseColor(bgColor))
@@ -252,7 +218,7 @@ class ModuleSelectionActivity : AppCompatActivity() {
             gravity = Gravity.CENTER_VERTICAL
         }
 
-        return FrameLayout(this).apply {
+        return FrameLayout(context).apply {
             layoutParams = TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT
@@ -262,7 +228,7 @@ class ModuleSelectionActivity : AppCompatActivity() {
         }
     }
 
-    private fun createDividerView(): View = View(this).apply {
+    private fun createDividerView(): View = View(requireContext()).apply {
         layoutParams = TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 1.dp)
         setBackgroundColor(Color.parseColor("#e0e0e0"))
     }
@@ -272,7 +238,7 @@ class ModuleSelectionActivity : AppCompatActivity() {
     // ──────────────────────────────────────────────────────────────
 
     private fun loadModuleDetail(moduleId: Int) {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val response = RetrofitClient.moduleApi.getModuleDetail(moduleId)
                 if (response.isSuccessful) {
@@ -319,12 +285,7 @@ class ModuleSelectionActivity : AppCompatActivity() {
         // Кнопка активна только для ONLINE-модулей
         binding.btnGoToServer.isEnabled = online
         binding.btnGoToServer.setOnClickListener {
-            // TODO: передать module_id / url на следующий экран
-            // val intent = Intent(this, ModuleEventsActivity::class.java).apply {
-            //     putExtra("module_id", module.moduleId)
-            //     putExtra("module_url", module.url)
-            // }
-            // startActivity(intent)
+            // TODO: переход на другой экран
         }
     }
 
@@ -352,10 +313,10 @@ class ModuleSelectionActivity : AppCompatActivity() {
     }
 
     private fun showError(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
-    // dp-расширения внутри Activity (resources доступен из контекста)
+    // dp-расширения
     private val Int.dp: Int get() = (this * resources.displayMetrics.density).toInt()
     private val Float.dp: Float get() = this * resources.displayMetrics.density
 }
