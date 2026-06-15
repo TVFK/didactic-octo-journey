@@ -33,6 +33,9 @@
             android:name=".ui.activities.ServerMonitoringActivity"
             android:exported="false" />
         <activity
+            android:name="ru.alex.lab_4.ui.activities.DishDatabaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".ModuleSelectionActivity"
             android:label="Выбор модуля распознавания" />
         <activity

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ширины столбцов ДОЛЖНЫ совпадать с заголовком в activity_dish_database.xml:
+    Фото=76dp | Название=weight:1 | Код=110dp | Категория=100dp |
+    Статус=100dp | Эталонных фото=100dp | Дата=110dp | Действия=52dp
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_table_row"
+    android:gravity="center_vertical"
+    android:minHeight="76dp"
+    android:orientation="horizontal">
+
+    <!-- Фото (76dp) — MaterialCardView клипает изображение по скруглениям -->
+    <FrameLayout
+        android:layout_width="76dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <ImageView
+                android:id="@+id/ivDishPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f5f5f5"
+                android:scaleType="centerCrop" />
+
+        </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
+
+    <!-- Название (weight=1) -->
+    <TextView
+        android:id="@+id/tvDishName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="12dp"
+        android:textColor="#212121"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <!-- Код (110dp) -->
+    <TextView
+        android:id="@+id/tvDishCode"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:padding="12dp"
+        android:textColor="#424242"
+        android:textSize="14sp" />
+
+    <!-- Категория (100dp) -->
+    <TextView
+        android:id="@+id/tvDishCategory"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:textColor="#424242"
+        android:textSize="14sp" />
+
+    <!-- Статус (100dp) -->
+    <FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipDishStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:chipMinHeight="28dp"
+            app:ensureMinTouchTargetSize="false" />
+    </FrameLayout>
+
+    <!-- Эталонных фото (100dp) -->
+    <TextView
+        android:id="@+id/tvPhotoCount"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:textColor="#424242"
+        android:textSize="14sp" />
+
+    <!-- Дата обновления (110dp) -->
+    <TextView
+        android:id="@+id/tvUpdatedDate"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:textColor="#424242"
+        android:textSize="14sp" />
+
+    <!-- Действия (52dp) -->
+    <FrameLayout
+        android:layout_width="52dp"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/btnDishMenu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Действия"
+            android:src="@drawable/ic_more_vertical" />
+    </FrameLayout>
+
+</LinearLayout>

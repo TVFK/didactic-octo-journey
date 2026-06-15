@@ -20,6 +20,7 @@ import com.google.android.material.chip.Chip
 import kotlinx.coroutines.launch
 import ru.taf.lab_4.R
 import ru.taf.lab_4.api.RetrofitClient
+import ru.alex.lab_4.utils.NavigationUtils
 import ru.taf.lab_4.databinding.ActivityModuleSelectionBinding
 import ru.taf.lab_4.model.ModuleDetail
 import ru.taf.lab_4.model.ModuleSummary
@@ -81,13 +82,7 @@ class ModuleSelectionActivity : AppCompatActivity() {
     private fun setupNavigation() {
         // Подсвечиваем активный пункт
         binding.navigationPanel.navModules.isSelected = true
-
-        // TODO: добавить обработчики остальных пунктов при реализации навигации
-        binding.navigationPanel.navLogout.setOnClickListener {
-            getSharedPreferences("auth", MODE_PRIVATE).edit().clear().apply()
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
+        NavigationUtils.setupNavigation(this, binding.navigationPanel)
     }
 
     // ──────────────────────────────────────────────────────────────

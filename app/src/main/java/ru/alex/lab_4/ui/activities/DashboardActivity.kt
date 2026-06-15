@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import ru.alex.lab_4.utils.NavigationUtils
 import ru.taf.lab_4.R
 import ru.taf.lab_4.databinding.ActivityDashboardBinding
 import ru.taf.lab_4.ui.fragments.DashboardFragment
@@ -41,6 +42,9 @@ class DashboardActivity : AppCompatActivity() {
             resetNavigationSelection()
             binding.navigationPanel.navModules.isSelected = true
         }
+
+        // Настройка общей навигации (для остальных пунктов)
+        NavigationUtils.setupNavigation(this, binding.navigationPanel)
     }
 
     private fun replaceFragment(fragment: Fragment, tag: String) {
