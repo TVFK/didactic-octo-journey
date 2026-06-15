@@ -50,7 +50,7 @@ class HomeActivity : AppCompatActivity() {
                         binding.tvSyncStatus.text =
                             if (data.workingModules > 0) "В порядке" else "Нет связи"
                         // Последнее обновление меню - пока оставим хардкод, нет данных в API
-                        binding.tvLastUpdate.text = "24.05.2026 08:30"
+                        binding.tvLastUpdate.text = "18.06.2026 08:30"
                     }
                 }
             } catch (e: Exception) {

@@ -26,6 +26,28 @@
                 В Kotlin: navItem.isSelected = true / false при навигации.
             -->
             <LinearLayout
+                android:id="@+id/navDashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/selector_nav_item"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="16dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
+                    android:text="Панель состояния"
+                    android:textColor="@color/nav_item_text_color"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/navModules"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
